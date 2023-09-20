@@ -5,13 +5,18 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import simulate.user.registration.model.User;
+import simulate.user.registration.utils.InputValidator;
 
+import java.util.Random;
 
 
 @Service
@@ -20,16 +25,30 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
     private final RestTemplate rest;
     @Value( "${geolocation.url}")
     private String geolocationUrl;
+    @Autowired
+    private InputValidator inputValidator;
 
     public SimulateUserRegServiceImpl(RestTemplateBuilder builder) {
         this.rest = builder.build();
     }
 
     @Override
-    public ResponseEntity<String> registerUser(String username, String password, String ipAddress) {
-
-        this.getUserCity(ipAddress);
-        return null;
+    public ResponseEntity<String> registerUser(User user) {
+        if(inputValidator.isValidCredentials(user) && inputValidator.isValidIpAddress(user)){
+                String city = getUserCity(user.getIpAddress());
+            Random random = new Random();
+                String welcomeMessage = random.nextInt() + " " + user.getUserName() + " From " + city
+                        + "\n" + "Registration Successfully Completed";
+            return ResponseEntity.status(HttpStatus.OK).body(welcomeMessage);
+        }else{
+            String errorMessage = "";
+            if(!inputValidator.isValidCredentials(user)){
+                errorMessage = "Invalid Credentials";
+            }else{
+                errorMessage = "Invalid IP address";
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        }
     }
 
     private String getUserCity(String ipAddress){

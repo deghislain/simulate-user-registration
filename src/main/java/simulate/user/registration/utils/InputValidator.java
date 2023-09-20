@@ -15,11 +15,11 @@ public class InputValidator {
 
     private boolean validateCredentials(User user){
         if(user != null) {
-            if (user.getUserName() == null || user.getUserName().isEmpty() || user.getUserName().isBlank()
+            if (user.getUserName() == null || user.getUserName().isEmpty()
                     || user.getUserName().length()<2 || user.getUserName().length()>30) {
                 return false;
             }
-            if (user.getPassword() == null || user.getPassword().isEmpty() || user.getPassword().isBlank()) {
+            if (user.getPassword() == null || user.getPassword().isEmpty()) {
                 return false;
             }
 
@@ -34,7 +34,7 @@ public class InputValidator {
         return this.validateIpAddress(user.getIpAddress());
     }
 private boolean validateIpAddress(String ip){
-    if (ip == null || ip.isEmpty() || ip.isBlank()) {
+    if (ip == null || ip.isEmpty()) {
         return false;
     }
     String regex = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";

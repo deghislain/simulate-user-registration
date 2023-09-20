@@ -22,8 +22,7 @@ public class SimulateUserRegController {
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user){
 
         if(inputValidator.isValidCredentials(user) && inputValidator.isValidIpAddress(user)){
-           //service.registerUser(user);
-           return ResponseEntity.status(HttpStatus.OK).body("OK");
+           return this.service.registerUser(user);
         }else{
             String errorMessage = "";
             if(!inputValidator.isValidCredentials(user)){

@@ -13,13 +13,8 @@ public class User {
     @Id
     @GeneratedValue
     private Integer userId;
-    @Min(2)
-    @Max(30)
     private String userName;
-    @Min(8)
-    @Max(30)
     private String password;
-    @Pattern(regexp = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$")
    private String ipAddress;
 
 

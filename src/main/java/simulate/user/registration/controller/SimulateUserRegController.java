@@ -20,11 +20,18 @@ public class SimulateUserRegController {
 
     @PostMapping("/registration")
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user){
-        if(inputValidator.isValidRegisterUserInput(user)){
-           // service.registerUser(username, password, ipAddress);
+
+        if(inputValidator.isValidCredentials(user) && inputValidator.isValidIpAddress(user)){
+           //service.registerUser(user);
            return ResponseEntity.status(HttpStatus.OK).body("OK");
         }else{
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Input");
+            String errorMessage = "";
+            if(!inputValidator.isValidCredentials(user)){
+                errorMessage = "Invalid Credentials";
+            }else{
+                errorMessage = "Invalid IP address";
+            }
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
 

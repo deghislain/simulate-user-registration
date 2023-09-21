@@ -50,6 +50,20 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
 
     }
     @Test
+    void testNonCanadianIpAddress() throws Exception {
+        User user = new User();
+        user.setUserId(111);
+        user.setUserName("username");
+        user.setPassword("Mypass1jg$");
+        user.setIpAddress("1.0.0.0");
+        when(this.service.registerUser(user)).thenReturn(badReqResponse);
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
+                        .contentType(MediaType. APPLICATION_JSON_VALUE)
+                        .content(asJsonString(user)))
+                .andExpect(status().isBadRequest());
+
+    }
+    @Test
     void testBlankUserName() throws Exception {
         User user = new User();
         user.setUserId(111);

@@ -22,25 +22,33 @@ import java.util.Random;
 @Service
 @Slf4j
 public class SimulateUserRegServiceImpl implements SimulateUserRegService{
-    private final RestTemplate rest;
     @Value( "${geolocation.url}")
     private String geolocationUrl;
     //@Autowired
     private InputValidator inputValidator;
-
-    public SimulateUserRegServiceImpl(RestTemplateBuilder builder) {
-        this.rest = builder.build();
+    @Autowired
+    RestTemplateBuilder builder;
+    public SimulateUserRegServiceImpl() {
         this.inputValidator = new InputValidator();
     }
 
     @Override
     public ResponseEntity<String> registerUser(User user) {
-        if(inputValidator.isValidCredentials(user) && inputValidator.isValidIpAddress(user)){
-                String city = getUserCity(user.getIpAddress());
-            Random random = new Random();
-                String welcomeMessage = random.nextInt() + " " + user.getUserName() + " From " + city
-                        + "\n" + "Registration Successfully Completed";
-            return ResponseEntity.status(HttpStatus.CREATED).body(welcomeMessage);
+        HttpStatus status = HttpStatus.CREATED;
+        if(inputValidator.isValidCredentials(user) && inputValidator.isValidIpAddress(user)) {
+            String messageToUser = new Random().nextInt() + " " + user.getUserName();
+            String city = getUserCity(user.getIpAddress());
+            if (city.equalsIgnoreCase("Only Canadian IP are allowed")) {
+                messageToUser += " we are sorry, only Canadian IP are allowed";
+                status = HttpStatus.BAD_REQUEST;
+            } else if (city == null || city.isEmpty() || city.isBlank()) {
+                messageToUser = " we are unable to verify your IP address";
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }else{
+                messageToUser += " From " + city
+                    + "\n" + "Registration Successfully Completed";
+        }
+            return ResponseEntity.status(status).body(messageToUser);
         }else{
             String errorMessage = "";
             if(!inputValidator.isValidCredentials(user)){
@@ -57,12 +65,15 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
         String city = "";
         String country = "";
         try {
+            RestTemplate rest = builder.build();
             ResponseEntity<String> resp = rest.getForEntity(geolocationUrl, String.class);
             if (resp != null) {
                 country = getFieldValueByFieldName(this.toJson(resp.getBody()), "country");
             }
             if (!country.isEmpty() && country.equalsIgnoreCase("Canada")) {
                 city = getFieldValueByFieldName(this.toJson(resp.getBody()), "city");
+            }else{
+                return "Only Canadian IP are allowed";
             }
         }catch(Exception e){
             log.error("Error while calling Geolocation with {}" + ipAddress);
@@ -73,11 +84,9 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
 
     private String getFieldValueByFieldName(JsonNode respBody, String fieldName){
         String fieldValue = "";
-        if(respBody != null){
-            if(respBody.has(fieldName) && respBody.get(fieldName) != null && !respBody.get(fieldName) .asText().isEmpty()){
+            if(respBody != null && respBody.has(fieldName) && respBody.get(fieldName) != null && !respBody.get(fieldName) .asText().isEmpty()){
                 fieldValue = respBody.get(fieldName) .asText();
             }
-        }
         return fieldValue;
     }
 

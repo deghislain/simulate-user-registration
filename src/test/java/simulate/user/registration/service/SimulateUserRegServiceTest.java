@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import simulate.user.registration.model.User;
+import simulate.user.registration.repository.SimulateUserRegRepository;
 
 import java.util.Random;
 
@@ -29,6 +30,8 @@ public class SimulateUserRegServiceTest {
     private String geolocationUrl;
     @Autowired
     private SimulateUserRegService service;
+    @MockBean
+    private SimulateUserRegRepository repository;
     @Test
     public void testValidUserInput(){
             User user = new User();
@@ -42,7 +45,7 @@ public class SimulateUserRegServiceTest {
             geolocationUrl += "24.215.85.18";
             ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CREATED).body(welcomeMessage);
             when(rest.getForEntity(geolocationUrl, String.class)).thenReturn(response);
-
+        when(this.repository.saveUser(user)).thenReturn(user);
         ResponseEntity<String> resp = this.service.registerUser(user);
         assertNotNull(resp);
         assertEquals(HttpStatus.CREATED, resp.getStatusCode());

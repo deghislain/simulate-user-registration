@@ -21,7 +21,7 @@ public class SimulateUserRegRepositoryTest {
     @MockBean
     EntityManager em;
 
-    //@Test
+    @Test
     void testStoreValidUserInput() throws Exception {
         User user = new User();
         user.setUserName("username");

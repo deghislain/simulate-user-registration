@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import simulate.user.registration.model.User;
+import simulate.user.registration.repository.SimulateUserRegRepository;
 import simulate.user.registration.utils.InputValidator;
 
 import java.util.Random;
@@ -25,26 +26,37 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
     @Value( "${geolocation.url}")
     private String geolocationUrl;
     @Autowired
-    RestTemplateBuilder builder;
+    private RestTemplateBuilder builder;
+
+    @Autowired
+    private SimulateUserRegRepository repository;
+
+
 
 
     @Override
     public ResponseEntity<String> registerUser(User user) {
         InputValidator inputValidator = new InputValidator();
         HttpStatus status = HttpStatus.CREATED;
+        User savedUser = new User();
         if(inputValidator.isValidCredentials(user) && inputValidator.isValidIpAddress(user)) {
-            String messageToUser = new Random().nextInt() + " " + user.getUserName();
+            String messageToUser = "";
             String city = getUserCity(user.getIpAddress());
             if (city.equalsIgnoreCase("Only Canadian IP are allowed")) {
-                messageToUser += " we are sorry, only Canadian IP are allowed";
+                messageToUser += user.getUserName() + " we are sorry, only Canadian IP are allowed";
                 status = HttpStatus.BAD_REQUEST;
             } else if (city.isEmpty() || city.isBlank()) {
-                messageToUser = " we are unable to verify your IP address";
+                messageToUser += user.getUserName() + " we are unable to verify your IP address";
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
             }else{
-                messageToUser += " From " + city
+                savedUser = repository.saveUser(user);
+                messageToUser += user.getUserId() + " Welcome " +user.getUserName() +" From " + city
                     + "\n" + "Registration Successfully Completed";
         }
+
+            if(savedUser == null){
+                status = HttpStatus.INTERNAL_SERVER_ERROR;
+            }
             return ResponseEntity.status(status).body(messageToUser);
         }else{
             String errorMessage = "";
@@ -58,12 +70,12 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
     }
 
     private String getUserCity(String ipAddress){
-        geolocationUrl += ipAddress;
+        String completeGeolocationUrl = geolocationUrl + ipAddress;
         String city = "";
         String country = "";
         try {
             RestTemplate rest = builder.build();
-            ResponseEntity<String> resp = rest.getForEntity(geolocationUrl, String.class);
+            ResponseEntity<String> resp = rest.getForEntity(completeGeolocationUrl, String.class);
             if (resp != null) {
                 country = getFieldValueByFieldName(this.toJson(resp.getBody()), "country");
             }

@@ -12,16 +12,12 @@ import simulate.user.registration.utils.InputValidator;
 @Transactional
 @Slf4j
 public class SimulateUserRegRepositoryImpl implements SimulateUserRegRepository{
-    private InputValidator inputValidator;
-
-    public SimulateUserRegRepositoryImpl() {
-        this.inputValidator = new InputValidator();
-    }
     @Autowired
     EntityManager em;
     public User saveUser(User user){
+        InputValidator inputValidator = new InputValidator();
         try {
-            if (this.inputValidator.isValidCredentials(user) && this.inputValidator.isValidIpAddress(user)) {
+            if (inputValidator.isValidCredentials(user) && inputValidator.isValidIpAddress(user)) {
                 if (user.getUserId() == null) {
                     em.persist(user);
                 } else {
@@ -36,4 +32,5 @@ public class SimulateUserRegRepositoryImpl implements SimulateUserRegRepository{
         }
             return user;
     }
+
 }

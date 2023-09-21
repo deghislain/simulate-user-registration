@@ -1,5 +1,6 @@
 package simulate.user.registration.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -32,13 +34,18 @@ public class SimulateUserRegServiceTest {
     private SimulateUserRegService service;
     @MockBean
     private SimulateUserRegRepository repository;
+
+    private  User user;
+    @BeforeEach
+    public void init() {
+        user = new User();
+        user.setUserId(new Random().nextInt());
+        user.setUserName("username");
+        user.setPassword("Mypass1jg$");
+        user.setIpAddress("24.215.85.18");
+    }
     @Test
     public void testValidUserInput(){
-            User user = new User();
-            user.setUserId(new Random().nextInt());
-            user.setUserName("username");
-            user.setPassword("Mypass1jg$");
-            user.setIpAddress("24.215.85.18");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " From " + "Bedford"
                 + "\n" + "Registration Successfully Completed";
             when(builder.build()).thenReturn(rest);
@@ -52,10 +59,6 @@ public class SimulateUserRegServiceTest {
     }
     @Test
     public void testNonCanadianIPInput(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
-        user.setPassword("Mypass1jg$");
         user.setIpAddress("1.0.0.0");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Only Canadian IP are allowed";
         when(builder.build()).thenReturn(rest);
@@ -70,11 +73,7 @@ public class SimulateUserRegServiceTest {
 
     @Test
     public void testBlankUserName(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
         user.setUserName(" ");
-        user.setPassword("Mypass1jg$");
-        user.setIpAddress("24.215.85.18");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid Credentials";
         when(builder.build()).thenReturn(rest);
         geolocationUrl += "24.215.85.18";
@@ -88,11 +87,7 @@ public class SimulateUserRegServiceTest {
 
     @Test
     void testEmptyUserName() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
         user.setUserName("");
-        user.setPassword("Mypass1jg$");
-        user.setIpAddress("24.215.85.18");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid Credentials";
         when(builder.build()).thenReturn(rest);
         geolocationUrl += "1.0.0.0";
@@ -106,11 +101,7 @@ public class SimulateUserRegServiceTest {
 
     @Test
     void testNullUserName() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
         user.setUserName(null);
-        user.setPassword("Mypass1jg$");
-        user.setIpAddress("24.215.85.18");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid Credentials";
         when(builder.build()).thenReturn(rest);
         geolocationUrl += "1.0.0.0";
@@ -123,11 +114,7 @@ public class SimulateUserRegServiceTest {
     }
     @Test
     void testBlankPassword() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
         user.setPassword(" ");
-        user.setIpAddress("24.215.85.18");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid Credentials";
         when(builder.build()).thenReturn(rest);
         geolocationUrl += "24.215.85.18";
@@ -140,11 +127,7 @@ public class SimulateUserRegServiceTest {
     }
     @Test
     void testEmptyPassword() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
         user.setPassword("");
-        user.setIpAddress("24.215.85.18");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid Credentials";
         when(builder.build()).thenReturn(rest);
         geolocationUrl += "24.215.85.18";
@@ -157,11 +140,7 @@ public class SimulateUserRegServiceTest {
     }
     @Test
     void testNullPassword() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
         user.setPassword(null);
-        user.setIpAddress("24.215.85.18");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid Credentials";
         when(builder.build()).thenReturn(rest);
         geolocationUrl += "24.215.85.18";
@@ -174,10 +153,6 @@ public class SimulateUserRegServiceTest {
     }
     @Test
     void testBlankIpAddress() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
-        user.setPassword("Mypass$1utr");
         user.setIpAddress(" ");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid IP address";
         when(builder.build()).thenReturn(rest);
@@ -192,10 +167,6 @@ public class SimulateUserRegServiceTest {
 
     @Test
     void testEmptyIpAddress() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
-        user.setPassword("Mypass$1utr");
         user.setIpAddress("");
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid IP address";
         when(builder.build()).thenReturn(rest);
@@ -210,10 +181,6 @@ public class SimulateUserRegServiceTest {
 
     @Test
     void testNullIpAddress() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
-        user.setPassword("Mypass$1utr");
         user.setIpAddress(null);
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Invalid IP address";
         when(builder.build()).thenReturn(rest);

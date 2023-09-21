@@ -30,18 +30,21 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     private SimulateUserRegService service;
 
     ResponseEntity<String> badReqResponse;
+
+   private  User user;
     @BeforeEach
     public void init() {
         badReqResponse = new ResponseEntity<>(new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-    @Test
-    void testValidUserInput() throws Exception {
-        ResponseEntity<String> createdResponse = new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
-        User user = new User();
+        user = new User();
         user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
+    }
+    @Test
+    void testValidUserInput() throws Exception {
+        ResponseEntity<String> createdResponse = new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
+
         when(this.service.registerUser(user)).thenReturn(createdResponse);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
@@ -52,10 +55,6 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     }
    @Test
     void testNonCanadianIpAddress() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
-        user.setPassword("Mypass1jg$");
         user.setIpAddress("1.0.0.0");
         when(this.service.registerUser(user)).thenReturn(badReqResponse);
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
@@ -66,11 +65,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     }
     @Test
     void testBlankUserName() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
         user.setUserName(" ");
-        user.setPassword("Mypass1jg$");
-        user.setIpAddress("127.0.0.1");
         when(this.service.registerUser(user)).thenReturn(badReqResponse);
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
                         .contentType(MediaType. APPLICATION_JSON_VALUE)
@@ -80,11 +75,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
 
     @Test
     void testEmptyUserName() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
         user.setUserName("");
-        user.setPassword("Mypass1jg$");
-        user.setIpAddress("127.0.0.1");
         when(this.service.registerUser(user)).thenReturn(badReqResponse);
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
                         .contentType(MediaType. APPLICATION_JSON_VALUE)
@@ -94,11 +85,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
 
     @Test
     void testBlankPassword() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
         user.setPassword(" ");
-        user.setIpAddress("127.0.0.1");
         when(this.service.registerUser(user)).thenReturn(badReqResponse);
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
                         .contentType(MediaType. APPLICATION_JSON_VALUE)
@@ -108,11 +95,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
 
     @Test
     void testEmptyPassword() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
         user.setPassword("");
-        user.setIpAddress("127.0.0.1");
         when(this.service.registerUser(user)).thenReturn(badReqResponse);
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
                         .contentType(MediaType. APPLICATION_JSON_VALUE)
@@ -122,11 +105,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
 
     @Test
     void testBlankIpAddress() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName(" ");
-        user.setPassword("Mygoodpass$1");
-        user.setIpAddress("127.0.0.1");
+        user.setIpAddress(" ");
         when(this.service.registerUser(user)).thenReturn(badReqResponse);
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
                         .contentType(MediaType. APPLICATION_JSON_VALUE)
@@ -136,11 +115,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
 
     @Test
     void testEmptyIpAddress() throws Exception {
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("");
-        user.setPassword("Mygoodpass$1");
-        user.setIpAddress("127.0.0.1");
+        user.setIpAddress("");
         when(this.service.registerUser(user)).thenReturn(badReqResponse);
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
                         .contentType(MediaType. APPLICATION_JSON_VALUE)

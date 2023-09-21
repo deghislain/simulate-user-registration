@@ -6,7 +6,7 @@ import simulate.user.registration.model.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
+//@Component
 public class InputValidator {
 
     public boolean isValidCredentials(User user){
@@ -15,7 +15,7 @@ public class InputValidator {
 
     private boolean validateCredentials(User user){
         if(user != null) {
-            if (user.getUserName() == null || user.getUserName().isEmpty()
+            if (user.getUserName() == null || user.getUserName().isEmpty() || user.getUserName().isBlank()
                     || user.getUserName().length()<2 || user.getUserName().length()>30) {
                 return false;
             }
@@ -34,7 +34,7 @@ public class InputValidator {
         return this.validateIpAddress(user.getIpAddress());
     }
 private boolean validateIpAddress(String ip){
-    if (ip == null || ip.isEmpty()) {
+    if (ip == null || ip.isEmpty() || ip.isBlank()) {
         return false;
     }
     String regex = "^[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$";

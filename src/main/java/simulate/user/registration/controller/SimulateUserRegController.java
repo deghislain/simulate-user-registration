@@ -13,10 +13,13 @@ import simulate.user.registration.utils.InputValidator;
 @RestController
 @RequestMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SimulateUserRegController {
-    @Autowired
     private InputValidator inputValidator;
     @Autowired
     private SimulateUserRegService service;
+
+    public SimulateUserRegController(){
+        this.inputValidator = new InputValidator();
+    }
 
     @PostMapping("/registration")
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user){

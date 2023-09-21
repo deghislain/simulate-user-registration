@@ -25,11 +25,12 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
     private final RestTemplate rest;
     @Value( "${geolocation.url}")
     private String geolocationUrl;
-    @Autowired
+    //@Autowired
     private InputValidator inputValidator;
 
     public SimulateUserRegServiceImpl(RestTemplateBuilder builder) {
         this.rest = builder.build();
+        this.inputValidator = new InputValidator();
     }
 
     @Override
@@ -39,7 +40,7 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
             Random random = new Random();
                 String welcomeMessage = random.nextInt() + " " + user.getUserName() + " From " + city
                         + "\n" + "Registration Successfully Completed";
-            return ResponseEntity.status(HttpStatus.OK).body(welcomeMessage);
+            return ResponseEntity.status(HttpStatus.CREATED).body(welcomeMessage);
         }else{
             String errorMessage = "";
             if(!inputValidator.isValidCredentials(user)){

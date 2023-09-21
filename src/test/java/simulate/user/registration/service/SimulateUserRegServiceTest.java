@@ -35,7 +35,7 @@ public class SimulateUserRegServiceTest {
     @Test
     public void testValidUserInput(){
             User user = new User();
-            user.setUserId(1234456677);
+            user.setUserId(new Random().nextInt());
             user.setUserName("username");
             user.setPassword("Mypass1jg$");
             user.setIpAddress("24.215.85.18");
@@ -53,7 +53,7 @@ public class SimulateUserRegServiceTest {
     @Test
     public void testNonCanadianIPInput(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("1.0.0.0");
@@ -71,7 +71,7 @@ public class SimulateUserRegServiceTest {
     @Test
     public void testBlankUserName(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName(" ");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
@@ -89,7 +89,7 @@ public class SimulateUserRegServiceTest {
     @Test
     void testEmptyUserName() throws Exception {
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
@@ -107,7 +107,7 @@ public class SimulateUserRegServiceTest {
     @Test
     void testNullUserName() throws Exception {
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName(null);
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
@@ -124,7 +124,7 @@ public class SimulateUserRegServiceTest {
     @Test
     void testBlankPassword() throws Exception {
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword(" ");
         user.setIpAddress("24.215.85.18");
@@ -141,7 +141,7 @@ public class SimulateUserRegServiceTest {
     @Test
     void testEmptyPassword() throws Exception {
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("");
         user.setIpAddress("24.215.85.18");
@@ -158,7 +158,7 @@ public class SimulateUserRegServiceTest {
     @Test
     void testNullPassword() throws Exception {
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword(null);
         user.setIpAddress("24.215.85.18");
@@ -175,7 +175,7 @@ public class SimulateUserRegServiceTest {
     @Test
     void testBlankIpAddress() throws Exception {
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass$1utr");
         user.setIpAddress(" ");
@@ -193,7 +193,7 @@ public class SimulateUserRegServiceTest {
     @Test
     void testEmptyIpAddress() throws Exception {
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass$1utr");
         user.setIpAddress("");
@@ -211,7 +211,7 @@ public class SimulateUserRegServiceTest {
     @Test
     void testNullIpAddress() throws Exception {
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass$1utr");
         user.setIpAddress(null);

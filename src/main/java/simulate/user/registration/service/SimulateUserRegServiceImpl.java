@@ -17,7 +17,7 @@ import simulate.user.registration.model.User;
 import simulate.user.registration.repository.SimulateUserRegRepository;
 import simulate.user.registration.utils.InputValidator;
 
-import java.util.Random;
+
 
 
 @Service
@@ -27,7 +27,6 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
     private String geolocationUrl;
     @Autowired
     private RestTemplateBuilder builder;
-
     @Autowired
     private SimulateUserRegRepository repository;
 

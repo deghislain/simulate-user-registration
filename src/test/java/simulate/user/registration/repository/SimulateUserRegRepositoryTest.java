@@ -9,6 +9,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import simulate.user.registration.model.User;
 
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -37,7 +39,7 @@ public class SimulateUserRegRepositoryTest {
     @Test
     public void testBlankUserName(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName(" ");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
@@ -51,7 +53,7 @@ public class SimulateUserRegRepositoryTest {
     @Test
     public void testEmptyUserName(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
@@ -65,7 +67,7 @@ public class SimulateUserRegRepositoryTest {
     @Test
     public void testNullUserName(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName(null);
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
@@ -79,7 +81,7 @@ public class SimulateUserRegRepositoryTest {
     @Test
     public void testBlankPassword(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword(" ");
         user.setIpAddress("24.215.85.18");
@@ -93,7 +95,7 @@ public class SimulateUserRegRepositoryTest {
     @Test
     public void testEmptyPassword(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("");
         user.setIpAddress("24.215.85.18");
@@ -107,7 +109,7 @@ public class SimulateUserRegRepositoryTest {
     @Test
     public void testNullPassword(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword(null);
         user.setIpAddress("24.215.85.18");
@@ -134,7 +136,7 @@ public class SimulateUserRegRepositoryTest {
     @Test
     public void testEmptyIpAddress(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("");
@@ -148,7 +150,7 @@ public class SimulateUserRegRepositoryTest {
     @Test
     public void testNullIpAddress(){
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass1jg$");
         user.setIpAddress(null);

@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import simulate.user.registration.model.User;
 import simulate.user.registration.service.SimulateUserRegService;
 
+import java.util.Random;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +38,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     void testValidUserInput() throws Exception {
         ResponseEntity<String> createdResponse = new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
         User user = new User();
-        user.setUserId(1234456677);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
@@ -51,7 +53,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
    @Test
     void testNonCanadianIpAddress() throws Exception {
         User user = new User();
-        user.setUserId(111);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("1.0.0.0");
@@ -65,7 +67,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     @Test
     void testBlankUserName() throws Exception {
         User user = new User();
-        user.setUserId(111);
+        user.setUserId(new Random().nextInt());
         user.setUserName(" ");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("127.0.0.1");
@@ -79,7 +81,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     @Test
     void testEmptyUserName() throws Exception {
         User user = new User();
-        user.setUserId(111);
+        user.setUserId(new Random().nextInt());
         user.setUserName("");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("127.0.0.1");
@@ -93,7 +95,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     @Test
     void testBlankPassword() throws Exception {
         User user = new User();
-        user.setUserId(111);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword(" ");
         user.setIpAddress("127.0.0.1");
@@ -107,7 +109,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     @Test
     void testEmptyPassword() throws Exception {
         User user = new User();
-        user.setUserId(111);
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("");
         user.setIpAddress("127.0.0.1");
@@ -121,7 +123,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     @Test
     void testBlankIpAddress() throws Exception {
         User user = new User();
-        user.setUserId(111);
+        user.setUserId(new Random().nextInt());
         user.setUserName(" ");
         user.setPassword("Mygoodpass$1");
         user.setIpAddress("127.0.0.1");
@@ -135,7 +137,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     @Test
     void testEmptyIpAddress() throws Exception {
         User user = new User();
-        user.setUserId(111);
+        user.setUserId(new Random().nextInt());
         user.setUserName("");
         user.setPassword("Mygoodpass$1");
         user.setIpAddress("127.0.0.1");

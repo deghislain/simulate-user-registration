@@ -24,16 +24,13 @@ import java.util.Random;
 public class SimulateUserRegServiceImpl implements SimulateUserRegService{
     @Value( "${geolocation.url}")
     private String geolocationUrl;
-    //@Autowired
-    private InputValidator inputValidator;
     @Autowired
     RestTemplateBuilder builder;
-    public SimulateUserRegServiceImpl() {
-        this.inputValidator = new InputValidator();
-    }
+
 
     @Override
     public ResponseEntity<String> registerUser(User user) {
+        InputValidator inputValidator = new InputValidator();
         HttpStatus status = HttpStatus.CREATED;
         if(inputValidator.isValidCredentials(user) && inputValidator.isValidIpAddress(user)) {
             String messageToUser = new Random().nextInt() + " " + user.getUserName();
@@ -41,7 +38,7 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
             if (city.equalsIgnoreCase("Only Canadian IP are allowed")) {
                 messageToUser += " we are sorry, only Canadian IP are allowed";
                 status = HttpStatus.BAD_REQUEST;
-            } else if (city == null || city.isEmpty() || city.isBlank()) {
+            } else if (city.isEmpty() || city.isBlank()) {
                 messageToUser = " we are unable to verify your IP address";
                 status = HttpStatus.INTERNAL_SERVER_ERROR;
             }else{
@@ -70,7 +67,7 @@ public class SimulateUserRegServiceImpl implements SimulateUserRegService{
             if (resp != null) {
                 country = getFieldValueByFieldName(this.toJson(resp.getBody()), "country");
             }
-            if (!country.isEmpty() && country.equalsIgnoreCase("Canada")) {
+            if (country.equalsIgnoreCase("Canada")) {
                 city = getFieldValueByFieldName(this.toJson(resp.getBody()), "city");
             }else{
                 return "Only Canadian IP are allowed";

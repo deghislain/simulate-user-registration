@@ -1,11 +1,10 @@
 package simulate.user.registration.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
+
 
 
 @Entity
@@ -13,8 +12,11 @@ public class User {
     @Id
     @GeneratedValue
     private Integer userId;
+    @Column(nullable = false)
     private String userName;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
    private String ipAddress;
 
 

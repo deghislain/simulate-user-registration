@@ -1,7 +1,6 @@
 package simulate.user.registration.controller;
 
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
         user.setUserId(1234456677);
         user.setUserName("username");
         user.setPassword("Mypass1jg$");
-        user.setIpAddress("127.0.0.1");
+        user.setIpAddress("24.215.85.18");
         when(this.service.registerUser(user)).thenReturn(createdResponse);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
@@ -49,7 +48,7 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
                         .andExpect(status().isCreated());
 
     }
-    @Test
+   @Test
     void testNonCanadianIpAddress() throws Exception {
         User user = new User();
         user.setUserId(111);

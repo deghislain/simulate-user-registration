@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(SimulateUserRegController.class)
 @AutoConfigureMockMvc
-public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBase{
+public class SimulateUserRegControllerTest extends SimulateUserRegControllerTestBase {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
@@ -43,24 +43,29 @@ public class SimulateUserRegControllerTest extends  SimulateUserRegControllerBas
     }
     @Test
     void testValidUserInput() throws Exception {
-        ResponseEntity<String> createdResponse = new ResponseEntity<>(new HttpHeaders(), HttpStatus.CREATED);
+        String messageToUser = user.getUserId() + " Welcome " +user.getUserName() +" From Bedford"
+                + "\n" + "Registration Successfully Completed";
+        ResponseEntity<String> createdResponse = ResponseEntity.status(HttpStatus.CREATED).body(messageToUser);
 
         when(this.service.registerUser(user)).thenReturn(createdResponse);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
                         .contentType(MediaType. APPLICATION_JSON_VALUE)
                         .content(asJsonString(user)))
-                        .andExpect(status().isCreated());
+                        .equals(createdResponse);
 
     }
    @Test
     void testNonCanadianIpAddress() throws Exception {
+       String errorMessage = "Only Canadian IP are allowed";
+       ResponseEntity<String> nonCaResp = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         user.setIpAddress("1.0.0.0");
         when(this.service.registerUser(user)).thenReturn(badReqResponse);
         mockMvc.perform(MockMvcRequestBuilders.post("/users/registration")
                         .contentType(MediaType. APPLICATION_JSON_VALUE)
                         .content(asJsonString(user)))
-                .andExpect(status().isBadRequest());
+                        .equals(nonCaResp);
+
 
     }
     @Test

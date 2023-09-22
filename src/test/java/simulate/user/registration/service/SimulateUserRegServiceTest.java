@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SimulateUserRegServiceTest {
+public class SimulateUserRegServiceTest extends SimulateUserRegServiceTestBase{
     @MockBean
     private RestTemplate rest;
     @MockBean
@@ -49,7 +49,7 @@ public class SimulateUserRegServiceTest {
                 + "\n" + "Registration Successfully Completed";
             when(builder.build()).thenReturn(rest);
             geolocationUrl += "24.215.85.18";
-            ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CREATED).body(welcomeMessage);
+            ResponseEntity<String> response = getGeoLocationMockCaResponse();
             when(rest.getForEntity(geolocationUrl, String.class)).thenReturn(response);
         when(this.repository.saveUser(user)).thenReturn(user);
         ResponseEntity<String> resp = this.service.registerUser(user);
@@ -62,7 +62,7 @@ public class SimulateUserRegServiceTest {
         String welcomeMessage = new Random().nextInt() + " " + user.getUserName() + " Only Canadian IP are allowed";
         when(builder.build()).thenReturn(rest);
         geolocationUrl += "1.0.0.0";
-        ResponseEntity<String> response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(welcomeMessage);
+        ResponseEntity<String> response = getGeoLocationMockNonCaResponse();
         when(rest.getForEntity(geolocationUrl, String.class)).thenReturn(response);
 
         ResponseEntity<String> resp = this.service.registerUser(user);

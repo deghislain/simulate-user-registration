@@ -1,6 +1,7 @@
 package simulate.user.registration.repository;
 
 import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,13 +23,20 @@ public class SimulateUserRegRepositoryTest {
     private SimulateUserRegRepository repository;
     @MockBean
     EntityManager em;
+    private  User user;
 
-    @Test
-    void testStoreValidUserInput() throws Exception {
-        User user = new User();
+    @BeforeEach
+    public void init() {
+        user = new User();
+        user.setUserId(new Random().nextInt());
         user.setUserName("username");
         user.setPassword("Mypass1jg$");
         user.setIpAddress("24.215.85.18");
+    }
+
+    @Test
+    void testStoreValidUserInput() throws Exception {
+        user.setUserId(null);
         User savedUser =  repository.saveUser(user);
 
         verify(em, times(1)).persist(user);
@@ -38,12 +46,7 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testBlankUserName(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
         user.setUserName(" ");
-        user.setPassword("Mypass1jg$");
-        user.setIpAddress("24.215.85.18");
-
         User savedUser =  repository.saveUser(user);
 
         verify(em, times(0)).persist(user);
@@ -52,12 +55,7 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testEmptyUserName(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
         user.setUserName("");
-        user.setPassword("Mypass1jg$");
-        user.setIpAddress("24.215.85.18");
-
         User savedUser =  repository.saveUser(user);
 
         verify(em, times(0)).persist(user);
@@ -66,12 +64,7 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testNullUserName(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
         user.setUserName(null);
-        user.setPassword("Mypass1jg$");
-        user.setIpAddress("24.215.85.18");
-
         User savedUser =  repository.saveUser(user);
 
         verify(em, times(0)).persist(user);
@@ -80,11 +73,7 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testBlankPassword(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
         user.setPassword(" ");
-        user.setIpAddress("24.215.85.18");
 
         User savedUser =  repository.saveUser(user);
 
@@ -94,12 +83,7 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testEmptyPassword(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
         user.setPassword("");
-        user.setIpAddress("24.215.85.18");
-
         User savedUser =  repository.saveUser(user);
 
         verify(em, times(0)).persist(user);
@@ -108,11 +92,7 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testNullPassword(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
         user.setPassword(null);
-        user.setIpAddress("24.215.85.18");
 
         User savedUser =  repository.saveUser(user);
 
@@ -122,9 +102,6 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testBlankIpAddress(){
-        User user = new User();
-        user.setUserName("username");
-        user.setPassword("Mypass1jg$");
         user.setIpAddress(" ");
 
         User savedUser =  repository.saveUser(user);
@@ -135,10 +112,6 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testEmptyIpAddress(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
-        user.setPassword("Mypass1jg$");
         user.setIpAddress("");
 
         User savedUser =  repository.saveUser(user);
@@ -149,10 +122,6 @@ public class SimulateUserRegRepositoryTest {
 
     @Test
     public void testNullIpAddress(){
-        User user = new User();
-        user.setUserId(new Random().nextInt());
-        user.setUserName("username");
-        user.setPassword("Mypass1jg$");
         user.setIpAddress(null);
 
         User savedUser =  repository.saveUser(user);
